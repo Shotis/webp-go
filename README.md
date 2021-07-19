@@ -4,6 +4,15 @@ A Go package for working with libwebp
 # Example
 
 ```go
+import (
+	"bytes"
+	"image/png"
+	"io/ioutil"
+	"os"
+
+	"github.com/shotis/webp-go"
+)
+
 func main() {
 	// open our original PNG file
 	file, err := os.Open("original.png")
@@ -22,14 +31,14 @@ func main() {
 	}
 
 	// create a new webp.Config that can be converted 1:1 to a WebPConfig
-	config := &Config{
+	config := &webp.Config{
 		Lossless: true, // Use lossless compression
 		Method:   0,    // use fastest compression. This ranges from 0-6
 		Quality:  100,  // try preserving 100% quality
 	}
 
 	// create a new webp.Picture. webp.Picture is a wrapper for the libwebp WebPPicture
-	picture := NewPicture(img)
+	picture := webp.NewPicture(img)
 	picture.Init()       // initialize and allocate the webp.Picture with the parameters from the passed in Image
 	defer picture.Free() // free when the execution is complete
 
