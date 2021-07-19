@@ -14,6 +14,7 @@ type Config struct {
 	Lossless bool
 	Method   int
 	Quality  float32
+	Hint     Hint
 
 	cConf *C.struct_WebPConfig
 }

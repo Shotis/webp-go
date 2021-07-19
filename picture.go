@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"image"
 	"io"
+	"strings"
 	"unsafe"
 )
 
@@ -22,6 +23,22 @@ const (
 	GraphHint
 	LastHint
 )
+
+var hints = map[string]Hint{
+	"default": DefaultHint,
+	"picture": PictureHint,
+	"photo":   PhotoHint,
+	"graph":   GraphHint,
+}
+
+func GetHint(s string) Hint {
+	v, ok := hints[strings.ToLower(s)]
+
+	if !ok {
+		return DefaultHint
+	}
+	return v
+}
 
 type Picture interface {
 	Bounds() image.Rectangle
