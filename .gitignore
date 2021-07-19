@@ -5,3 +5,6 @@
 *.png
 *.jpg
 *.jpeg
+.vscode
+*.webp
+example/example
