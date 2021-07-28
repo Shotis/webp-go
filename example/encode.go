@@ -2,7 +2,9 @@ package main
 
 import (
 	"bytes"
-	"image/png"
+	"image"
+	_ "image/jpeg"
+	_ "image/png"
 	"io/ioutil"
 	"os"
 
@@ -17,7 +19,7 @@ func encode(input, output string, config *webp.Config) error {
 		return err
 	}
 
-	img, err := png.Decode(f)
+	img, _, err := image.Decode(f)
 
 	if err != nil {
 		return err
@@ -30,7 +32,7 @@ func encode(input, output string, config *webp.Config) error {
 	picture.Init()       // initialize the picture
 	defer picture.Free() // free it
 
-	if err = picture.EncodeTo(&buf, config); err != nil {
+	if err = picture.Encode(&buf, config); err != nil {
 		return err
 	}
 

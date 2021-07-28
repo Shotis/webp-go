@@ -146,7 +146,7 @@ func (p *allocatedPicture) importYUVA(pic *YUVAPicture) {
 	p.cpicture.uv_stride = C.int(pic.uvStride)
 }
 
-func (p *allocatedPicture) EncodeTo(w io.Writer, config *Config) error {
+func (p *allocatedPicture) Encode(w io.Writer, config *Config) error {
 	conf, err := config.toCStruct()
 
 	if err != nil {
