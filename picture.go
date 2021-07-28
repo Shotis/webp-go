@@ -45,24 +45,24 @@ type Picture interface {
 	RGBA() bool
 }
 
-type allocatedPicture struct {
+type AllocatedPicture struct {
 	Picture
 	cpicture *C.WebPPicture
 }
 
-func NewPicture(img image.Image) *allocatedPicture {
+func NewPicture(img image.Image) *AllocatedPicture {
 	switch p := img.(type) {
 	case *image.RGBA:
-		return &allocatedPicture{Picture: NewRGBAImage(p)}
+		return &AllocatedPicture{Picture: NewRGBAImage(p)}
 	case *image.NRGBA:
-		return &allocatedPicture{Picture: NewNRGBAImage(p)}
+		return &AllocatedPicture{Picture: NewNRGBAImage(p)}
 	case *image.YCbCr:
-		return &allocatedPicture{Picture: NewYUVAPicture(p)}
+		return &AllocatedPicture{Picture: NewYUVAPicture(p)}
 	}
 	return nil
 }
 
-func (p *allocatedPicture) Init() error {
+func (p *AllocatedPicture) Init() error {
 	var pic C.struct_WebPPicture
 	i, err := C.WebPPictureInit(&pic)
 	if err != nil {
@@ -86,7 +86,7 @@ func (p *allocatedPicture) Init() error {
 	return nil
 }
 
-func (p *allocatedPicture) alloc() error {
+func (p *AllocatedPicture) alloc() error {
 	i, err := C.WebPPictureAlloc(p.cpicture)
 
 	if err != nil {
@@ -99,7 +99,7 @@ func (p *allocatedPicture) alloc() error {
 	return nil
 }
 
-func (p *allocatedPicture) Free() error {
+func (p *AllocatedPicture) Free() error {
 	_, err := C.WebPPictureFree(p.cpicture)
 
 	if err != nil {
@@ -108,7 +108,7 @@ func (p *allocatedPicture) Free() error {
 	return nil
 }
 
-func (p *allocatedPicture) importRGBA(pic *RGBAPicture) error {
+func (p *AllocatedPicture) importRGBA(pic *RGBAPicture) error {
 
 	cb := C.CBytes([]byte(pic.Pixels())) // translate the pixels to
 	defer C.free(cb)
@@ -126,7 +126,7 @@ func (p *allocatedPicture) importRGBA(pic *RGBAPicture) error {
 	return nil
 }
 
-func (p *allocatedPicture) importYUVA(pic *YUVAPicture) {
+func (p *AllocatedPicture) importYUVA(pic *YUVAPicture) {
 	// YUVA
 	y := C.CBytes([]byte(pic.y))
 	u := C.CBytes([]byte(pic.u))
@@ -146,7 +146,7 @@ func (p *allocatedPicture) importYUVA(pic *YUVAPicture) {
 	p.cpicture.uv_stride = C.int(pic.uvStride)
 }
 
-func (p *allocatedPicture) Encode(w io.Writer, config *Config) error {
+func (p *AllocatedPicture) Encode(w io.Writer, config *Config) error {
 	conf, err := config.toCStruct()
 
 	if err != nil {
