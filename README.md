@@ -1,4 +1,4 @@
-# webp-go
+# webp-go [![Go Reference](https://pkg.go.dev/badge/github.com/Shotis/webp-go.svg)](https://pkg.go.dev/github.com/Shotis/webp-go)
 A Go package for working with libwebp
 
 # Example
